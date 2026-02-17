@@ -40,6 +40,8 @@ Check out [create-medusa-app docs](https://docs.medusajs.com/learn/installation)
 
 # Overview
 
+Esta tienda está configurada como un storefront único para Chile, sin selección de región por país.
+
 The Medusa Next.js Starter is built with:
 
 - [Next.js](https://nextjs.org/)
@@ -75,6 +77,8 @@ Navigate into your projects directory and get your environment variables ready:
 cd nextjs-starter-medusa/
 mv .env.template .env.local
 ```
+
+**Nota importante:** Esta tienda está configurada para operar exclusivamente en Chile. Asegúrate de tener una región configurada para Chile (código de país: `cl`) en tu panel de administración de Medusa.
 
 ### Install dependencies
 

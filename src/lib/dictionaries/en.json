@@ -1,0 +1,18 @@
+{
+  "nav": {
+    "shop": "SHOP",
+    "all_products": "ALL PRODUCTS",
+    "search": "SEARCH",
+    "account": "ACCOUNT",
+    "cart": "BAG",
+    "menu": "MENU",
+    "checkout": "CHECKOUT",
+    "remove": "REMOVE",
+    "subtotal": "SUBTOTAL",
+    "empty_cart": "YOUR SHOPPING BAG IS EMPTY.",
+    "explore_products": "EXPLORE PRODUCTS"
+  }
+}
+
+
+

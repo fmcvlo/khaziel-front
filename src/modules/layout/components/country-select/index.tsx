@@ -27,13 +27,15 @@ type CountrySelectProps = {
 }
 
 const CountrySelect = ({ toggleState, regions }: CountrySelectProps) => {
+  // Siempre usar Chile
+  const countryCode = "cl"
+  
   const [current, setCurrent] = useState<
     | { country: string | undefined; region: string; label: string | undefined }
     | undefined
   >(undefined)
 
-  const { countryCode } = useParams()
-  const currentPath = usePathname().split(`/${countryCode}`)[1]
+  const currentPath = usePathname()
 
   const { state, close } = toggleState
 
@@ -51,11 +53,9 @@ const CountrySelect = ({ toggleState, regions }: CountrySelectProps) => {
   }, [regions])
 
   useEffect(() => {
-    if (countryCode) {
-      const option = options?.find((o) => o?.country === countryCode)
-      setCurrent(option)
-    }
-  }, [options, countryCode])
+    const option = options?.find((o) => o?.country === countryCode)
+    setCurrent(option)
+  }, [options])
 
   const handleChange = (option: CountryOption) => {
     updateRegion(option.country, currentPath)

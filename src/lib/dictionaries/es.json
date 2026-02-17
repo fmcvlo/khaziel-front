@@ -1,0 +1,18 @@
+{
+  "nav": {
+    "shop": "TIENDA",
+    "all_products": "TODOS LOS PRODUCTOS",
+    "search": "BUSCAR",
+    "account": "CUENTA",
+    "cart": "BOLSA",
+    "menu": "MENÚ",
+    "checkout": "FINALIZAR COMPRA",
+    "remove": "ELIMINAR",
+    "subtotal": "SUBTOTAL",
+    "empty_cart": "TU BOLSA DE COMPRAS ESTÁ VACÍA.",
+    "explore_products": "EXPLORAR PRODUCTOS"
+  }
+}
+
+
+

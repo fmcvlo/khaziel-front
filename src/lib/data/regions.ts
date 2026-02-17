@@ -37,10 +37,17 @@ export const retrieveRegion = async (id: string) => {
 
 const regionMap = new Map<string, HttpTypes.StoreRegion>()
 
-export const getRegion = async (countryCode: string) => {
+/**
+ * Obtiene la región para Chile (cl)
+ * El parámetro countryCode se mantiene para compatibilidad pero siempre usa 'cl'
+ */
+export const getRegion = async (countryCode?: string) => {
   try {
-    if (regionMap.has(countryCode)) {
-      return regionMap.get(countryCode)
+    // Siempre usar Chile
+    const targetCountry = "cl"
+    
+    if (regionMap.has(targetCountry)) {
+      return regionMap.get(targetCountry)
     }
 
     const regions = await listRegions()
@@ -55,9 +62,7 @@ export const getRegion = async (countryCode: string) => {
       })
     })
 
-    const region = countryCode
-      ? regionMap.get(countryCode)
-      : regionMap.get("us")
+    const region = regionMap.get(targetCountry)
 
     return region
   } catch (e: any) {

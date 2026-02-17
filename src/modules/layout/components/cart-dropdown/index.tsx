@@ -17,10 +17,14 @@ import Thumbnail from "@modules/products/components/thumbnail"
 import { usePathname } from "next/navigation"
 import { Fragment, useEffect, useRef, useState } from "react"
 
+import { ShoppingBag } from "lucide-react"
+
 const CartDropdown = ({
   cart: cartState,
+  dict,
 }: {
   cart?: HttpTypes.StoreCart | null
+  dict?: any
 }) => {
   const [activeTimer, setActiveTimer] = useState<NodeJS.Timer | undefined>(
     undefined
@@ -75,17 +79,20 @@ const CartDropdown = ({
 
   return (
     <div
-      className="h-full z-50"
+      className="h-full z-50 font-syne"
       onMouseEnter={openAndCancel}
       onMouseLeave={close}
     >
       <Popover className="relative h-full">
         <PopoverButton className="h-full">
           <LocalizedClientLink
-            className="hover:text-ui-fg-base"
+            className="hover:opacity-70 transition-opacity flex items-center gap-1 uppercase tracking-[0.1em] text-[10px]"
             href="/cart"
             data-testid="nav-cart-link"
-          >{`Cart (${totalItems})`}</LocalizedClientLink>
+          >
+            <ShoppingBag size={18} strokeWidth={1.2} />
+            <span>({totalItems})</span>
+          </LocalizedClientLink>
         </PopoverButton>
         <Transition
           show={cartDropdownOpen}
@@ -99,15 +106,15 @@ const CartDropdown = ({
         >
           <PopoverPanel
             static
-            className="hidden small:block absolute top-[calc(100%+1px)] right-0 bg-white border-x border-b border-gray-200 w-[420px] text-ui-fg-base"
+            className="hidden small:block absolute top-[calc(100%+1px)] right-0 bg-white border border-gray-200 w-[420px] text-ui-fg-base shadow-sm"
             data-testid="nav-cart-dropdown"
           >
-            <div className="p-4 flex items-center justify-center">
-              <h3 className="text-large-semi">Cart</h3>
+            <div className="p-4 flex items-center justify-center border-b">
+              <h3 className="uppercase tracking-[0.2em] text-[12px] font-bold">{dict?.nav.cart || "Bag"}</h3>
             </div>
             {cartState && cartState.items?.length ? (
               <>
-                <div className="overflow-y-scroll max-h-[402px] px-4 grid grid-cols-1 gap-y-8 no-scrollbar p-px">
+                <div className="overflow-y-scroll max-h-[402px] px-4 grid grid-cols-1 gap-y-8 no-scrollbar p-px mt-4">
                   {cartState.items
                     .sort((a, b) => {
                       return (a.created_at ?? "") > (b.created_at ?? "")
@@ -134,7 +141,7 @@ const CartDropdown = ({
                           <div className="flex flex-col flex-1">
                             <div className="flex items-start justify-between">
                               <div className="flex flex-col overflow-ellipsis whitespace-nowrap mr-4 w-[180px]">
-                                <h3 className="text-base-regular overflow-hidden text-ellipsis">
+                                <h3 className="uppercase tracking-[0.1em] text-[10px] font-bold overflow-hidden text-ellipsis">
                                   <LocalizedClientLink
                                     href={`/products/${item.product_handle}`}
                                     data-testid="product-link"
@@ -146,12 +153,14 @@ const CartDropdown = ({
                                   variant={item.variant}
                                   data-testid="cart-item-variant"
                                   data-value={item.variant}
+                                  className="text-[10px] uppercase tracking-tighter"
                                 />
                                 <span
+                                  className="text-[10px] uppercase mt-1"
                                   data-testid="cart-item-quantity"
                                   data-value={item.quantity}
                                 >
-                                  Quantity: {item.quantity}
+                                  Qty: {item.quantity}
                                 </span>
                               </div>
                               <div className="flex justify-end">
@@ -165,23 +174,22 @@ const CartDropdown = ({
                           </div>
                           <DeleteButton
                             id={item.id}
-                            className="mt-1"
+                            className="mt-1 text-[10px] uppercase underline tracking-widest"
                             data-testid="cart-item-remove-button"
                           >
-                            Remove
+                            {dict?.nav.remove || "Remove"}
                           </DeleteButton>
                         </div>
                       </div>
                     ))}
                 </div>
-                <div className="p-4 flex flex-col gap-y-4 text-small-regular">
-                  <div className="flex items-center justify-between">
-                    <span className="text-ui-fg-base font-semibold">
-                      Subtotal{" "}
-                      <span className="font-normal">(excl. taxes)</span>
+                <div className="p-4 flex flex-col gap-y-4 text-small-regular border-t mt-4">
+                  <div className="flex items-center justify-between uppercase tracking-[0.1em] text-[11px]">
+                    <span className="text-ui-fg-base font-bold">
+                      {dict?.nav.subtotal || "Subtotal"}
                     </span>
                     <span
-                      className="text-large-semi"
+                      className="font-bold"
                       data-testid="cart-subtotal"
                       data-value={subtotal}
                     >
@@ -193,27 +201,29 @@ const CartDropdown = ({
                   </div>
                   <LocalizedClientLink href="/cart" passHref>
                     <Button
-                      className="w-full"
+                      className="w-full uppercase tracking-[0.2em] text-[10px] h-10 rounded-none bg-black text-white hover:bg-gray-800"
                       size="large"
                       data-testid="go-to-cart-button"
                     >
-                      Go to cart
+                      {dict?.nav.checkout || "Checkout"}
                     </Button>
                   </LocalizedClientLink>
                 </div>
               </>
             ) : (
               <div>
-                <div className="flex py-16 flex-col gap-y-4 items-center justify-center">
-                  <div className="bg-gray-900 text-small-regular flex items-center justify-center w-6 h-6 rounded-full text-white">
-                    <span>0</span>
-                  </div>
-                  <span>Your shopping bag is empty.</span>
+                <div className="flex py-16 flex-col gap-y-4 items-center justify-center uppercase tracking-[0.1em] text-[10px]">
+                  <span>{dict?.nav.empty_cart || "Your shopping bag is empty."}</span>
                   <div>
                     <LocalizedClientLink href="/store">
                       <>
                         <span className="sr-only">Go to all products page</span>
-                        <Button onClick={close}>Explore products</Button>
+                        <Button 
+                          onClick={close}
+                          className="uppercase tracking-[0.2em] text-[10px] h-10 rounded-none bg-black text-white hover:bg-gray-800"
+                        >
+                          {dict?.nav.explore_products || "Explore products"}
+                        </Button>
                       </>
                     </LocalizedClientLink>
                   </div>
